@@ -3,13 +3,15 @@ import instaloader
 import glob
 import shutil
 import os
-from cat_detect import *
 import glob
+from cat_detect import *
+from dog_detect import *
+from tensorflow.keras.applications.resnet50 import ResNet50
 
 class ig_scrapper():
     def __init__(self):
         self.cat_detector = cat_detection()
-
+        self.dog_detector = dog_detection()
     def scrapper(self,detector,tag):
         bot = instaloader.Instaloader()
         hashtag = instaloader.Hashtag.from_name(bot.context, tag)
@@ -33,9 +35,11 @@ class ig_scrapper():
                 shutil.rmtree(filePath)
     def cat(self):
         self.scrapper(self.cat_detector,'catlovers')
-
+    def dog(self):
+        self.scrapper(self.dog_detector,'doglovers')
+#
 # obj = ig_scrapper()
-# obj.cat()
-
+# obj.dog()
+print(1)
 
 

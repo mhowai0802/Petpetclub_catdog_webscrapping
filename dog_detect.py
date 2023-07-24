@@ -8,6 +8,7 @@ from tqdm import tqdm
 from keras.applications.resnet50 import preprocess_input, decode_predictions
 from main import *
 
+
 class dog_detection():
     def __init__(self):
         self.ResNet50_model = ResNet50(weights='imagenet')
@@ -24,8 +25,3 @@ class dog_detection():
     def read_face_output(self,img_path):
         prediction = self.ResNet50_predict_labels(img_path)
         return ((prediction <= 268) & (prediction >= 151))
-
-detector = dog_detection()
-# print(detector.dog_detector('golden-retriever-royalty-free-image-506756303-1560962726.jpg'))
-obj = ig_scrapper()
-obj.scrapper(detector,'doglovers')
