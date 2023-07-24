@@ -1,0 +1,7 @@
+insta-scrape==2.1.2
+instaloader
+torch
+keras
+opencv-python
+tensorflow
+tqdm
