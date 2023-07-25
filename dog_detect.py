@@ -6,11 +6,11 @@ from keras.applications.resnet50 import ResNet50
 from keras.preprocessing import image
 from tqdm import tqdm
 from keras.applications.resnet50 import preprocess_input, decode_predictions
-from main import *
-
+import os
 
 class dog_detection():
     def __init__(self):
+        os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
         self.ResNet50_model = ResNet50(weights='imagenet')
     def path_to_tensor(self,img_path):
         img = image.load_img(img_path, target_size=(224, 224))

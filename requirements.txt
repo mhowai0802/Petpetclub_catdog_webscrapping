@@ -5,3 +5,5 @@ keras
 opencv-python
 tensorflow
 tqdm
+pillow
+instagrapi
