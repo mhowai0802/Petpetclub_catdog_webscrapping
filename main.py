@@ -42,7 +42,6 @@ class ig_scrapper():
         for filePath in fileList:
             if filePath.find(tag+'_') > 0:
                 shutil.rmtree(filePath)
-
     def videos(self,tag):
         # download all photos with tag
         bot = instaloader.Instaloader()
@@ -52,6 +51,7 @@ class ig_scrapper():
         counter = 0
         if os.path.exists(f'./{tag}-video') == False:
             os.mkdir(f'./{tag}-video')
+        master = []
         for index, post in enumerate(python_posts, 1):
             date = post.date_local.strftime('%Y-%m-%d')
             # Date before 2023-08-01
@@ -62,8 +62,14 @@ class ig_scrapper():
                     new_path = f'./{tag}-video/' + f'{tag}_{counter}.mp4'
                     shutil.move(f'./{tag}_{index}/' + video, new_path)
                     counter += 1
+                dict ={
+                    'User': post.owner_username,
+                    'is_video': post.is_video,
+                    'path': new_path
+                }
+                master.append(dict)
                 # Stop the loop after 100 posts
-            if index == 100: break
+            if index == 10: break
         # delete all photos with tag
         fileList = glob.glob('./*')
         for filePath in fileList:
@@ -76,14 +82,14 @@ class ig_scrapper():
     def dog(self):
         self.scrapper(self.dog_detector,'doglovers')
     def cat_video(self):
-        self.videos('cat_videos')
+        self.videos('catlovers')
     def dog_video(self):
-        self.videos('dog_videos')
+        self.videos('doglovers')
 
 obj = ig_scrapper()
-obj.cat()
-obj.dog()
-obj.cat_video()
+# obj.cat()
+# obj.dog()
+# obj.cat_video()
 obj.dog_video()
 
 
