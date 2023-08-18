@@ -16,7 +16,7 @@ class ig_scrapper():
     def scrapper(self,detector,tag):
         # download all photos with tag
         bot = instaloader.Instaloader()
-        bot.login('makhowai0802', 'joniwhfe5A')
+        # bot.login('makhowai0000', 'joniwhfe')
         hashtag = instaloader.Hashtag.from_name(bot.context, tag)
         python_posts = hashtag.get_posts()
         counter = 0
@@ -45,7 +45,7 @@ class ig_scrapper():
     def videos(self,tag):
         # download all photos with tag
         bot = instaloader.Instaloader()
-        bot.login('makhowai0802', 'joniwhfe5A')
+        bot.login('makhowai0000', 'joniwhfe')
         hashtag = instaloader.Hashtag.from_name(bot.context, tag)
         python_posts = hashtag.get_posts()
         counter = 0
@@ -69,7 +69,7 @@ class ig_scrapper():
                 }
                 master.append(dict)
                 # Stop the loop after 100 posts
-            if index == 10: break
+            if index == 100: break
         # delete all photos with tag
         fileList = glob.glob('./*')
         for filePath in fileList:
@@ -82,9 +82,9 @@ class ig_scrapper():
     def dog(self):
         self.scrapper(self.dog_detector,'doglovers')
     def cat_video(self):
-        self.videos('catlovers')
+        self.videos('catvideo')
     def dog_video(self):
-        self.videos('doglovers')
+        self.videos('dogvideo')
 
 obj = ig_scrapper()
 # obj.cat()
