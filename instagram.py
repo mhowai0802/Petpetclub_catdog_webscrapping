@@ -5,11 +5,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import csv
 from instascrape import Reel
+
 search_tag = 'dogvideo'
 chrome_options = Options()
 # chrome_options.add_argument('--headless')
 driver = webdriver.Chrome(options=chrome_options)
+
 session_id = '58733906784%3AMuCLBiBfhhbiPh%3A7%3AAYdloud_q7xHsoEZmtRIUbDhpilL5BWjOTeOE7rhaQ'
+
 
 def get_tag_name(driver):
     driver.get('https://www.instagram.com')
@@ -74,10 +77,14 @@ headers = {
 }
 
 driver.get('https://www.instagram.com/louby_love/reels')
-table = driver.find_element(By.XPATH,'/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[2]/section/main/div/div[3]/div/div/div')
-for element in table.find_elements(By.CSS_SELECTOR,'.x1i10hfl'):
+table = driver.find_element(By.XPATH,'/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[2]/section/main/div/div[3]/div')
+for element in table.find_elements(By.CSS_SELECTOR, '.x1i10hfl'):
     print(element.get_attribute('href'))
     insta_reel = Reel(element.get_attribute('href'))
     insta_reel.scrape(headers=headers)
     insta_reel.download('.\hihi.mp4')
     break
+
+insta_reel = Reel('https://www.instagram.com/reel/CsMYXtzxrKD/')
+insta_reel.scrape()
+insta_reel.download('.\hihi.mp4')
