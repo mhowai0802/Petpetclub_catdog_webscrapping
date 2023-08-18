@@ -7,3 +7,5 @@ tensorflow
 tqdm
 pillow
 instagrapi
+selenium
+pandas
