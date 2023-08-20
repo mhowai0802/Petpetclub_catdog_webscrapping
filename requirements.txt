@@ -11,3 +11,4 @@ selenium
 pandas
 instareels
 wget
+apify_client
