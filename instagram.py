@@ -4,17 +4,18 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import csv
-from instascrape import Reel
+import urllib.request
+import ssl
 
-search_tag = 'dogvideo'
+search_tag = '#dogvideo'
 chrome_options = Options()
 # chrome_options.add_argument('--headless')
 driver = webdriver.Chrome(options=chrome_options)
 
-session_id = '58733906784%3AMuCLBiBfhhbiPh%3A7%3AAYdloud_q7xHsoEZmtRIUbDhpilL5BWjOTeOE7rhaQ'
+ssl._create_default_https_context = ssl._create_unverified_context
 
 
-def get_tag_name(driver):
+def get_tag_name(search_tag, driver):
     driver.get('https://www.instagram.com')
     time.sleep(5)
     driver.find_element(By.XPATH,
@@ -31,7 +32,7 @@ def get_tag_name(driver):
                         '/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[1]/div/div/div/div/div[2]/div[2]/span/div/a/div').click()
     driver.find_element(By.XPATH,
                         '/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div/div/div[1]/div/div/input').send_keys(
-        '#dogvideo')
+        search_tag)
     time.sleep(5)
     lst = driver.find_element(By.XPATH,
                               '/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div/div/div[2]/div').text.split(
@@ -69,22 +70,23 @@ def list_user_csv(driver):
             writer.writerow([item])
 
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)\
-    AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.74 \
-    Safari/537.36 Edg/79.0.309.43",
-    "cookie": f'sessionid={session_id};'
-}
-
-driver.get('https://www.instagram.com/louby_love/reels')
-table = driver.find_element(By.XPATH,'/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[2]/section/main/div/div[3]/div')
-for element in table.find_elements(By.CSS_SELECTOR, '.x1i10hfl'):
-    print(element.get_attribute('href'))
-    insta_reel = Reel(element.get_attribute('href'))
-    insta_reel.scrape(headers=headers)
-    insta_reel.download('.\hihi.mp4')
+master = []
+df = pd.read_csv('csv/Account_name.csv', index_col=0)
+for index, row in df.iterrows():
+    driver.get(f'https://www.instagram.com/{index}/reels')
     break
+    time.sleep(20)
+    if len(driver.find_elements(By.XPATH,
+                                '/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[2]/section/main/div/div[3]/div')) == 0: continue
+    table = driver.find_element(By.XPATH,
+                                '/html/body/div[2]/div/div/div[2]/div/div/div/div[1]/div[2]/section/main/div/div[3]/div')
+    for element in table.find_elements(By.CSS_SELECTOR, '.x1i10hfl'):
+        print(element.get_attribute('href'))
+        dict = {
+            'Account Name': index,
+            'Reel Link': element.get_attribute('href')
+        }
+        master.append(dict)
 
-insta_reel = Reel('https://www.instagram.com/reel/CsMYXtzxrKD/')
-insta_reel.scrape()
-insta_reel.download('.\hihi.mp4')
+df = pd.DataFrame(master)
+df.to_csv("csv/Account_name_reels.csv", index=True)

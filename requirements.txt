@@ -9,3 +9,5 @@ pillow
 instagrapi
 selenium
 pandas
+instareels
+wget
