@@ -12,3 +12,4 @@ pandas
 instareels
 wget
 apify_client
+python-dotenv
